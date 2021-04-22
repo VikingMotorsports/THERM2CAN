@@ -61,7 +61,7 @@ int main(void)
 		data[4] = 0x24;
 		data[5] = 0x00;
 		data[6] = 0x23;
-		data[7]= 0x41; //TODO: verify this works
+		data[7]= 0x41;
 		for(int i= 0; i < 7; ++i)
 		{
 			data[7]+= data[i];
@@ -128,5 +128,5 @@ void select_channel(uint8_t thermistor)
 }
 void err()
 {
-	blink(GPIOC, GPIO_PIN_13, 3);
+	blink(GPIOC, GPIO_PIN_13, 100);
 }
