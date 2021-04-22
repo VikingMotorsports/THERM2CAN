@@ -57,6 +57,7 @@
 "HAL_Driver/Src/stm32f1xx_ll_usart.o"
 "HAL_Driver/Src/stm32f1xx_ll_usb.o"
 "HAL_Driver/Src/stm32f1xx_ll_utils.o"
+"src/config.o"
 "src/main.o"
 "src/msp_init.o"
 "src/stm32f1xx_it.o"

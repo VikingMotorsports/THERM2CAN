@@ -1,4 +1,5 @@
-src/main.o: ../src/main.c \
+src/config.o: ../src/config.c \
+ /Users/samuelparker/Code/Embedded/TEM_CAN1/inc/config.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/inc/main.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/CMSIS/device/stm32f1xx.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/CMSIS/device/stm32f103xb.h \
@@ -49,9 +50,9 @@ src/main.o: ../src/main.c \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_pcd.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_ll_usb.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h \
- /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_hcd.h \
- /Users/samuelparker/Code/Embedded/TEM_CAN1/inc/config.h \
- /Users/samuelparker/Code/Embedded/TEM_CAN1/inc/main.h
+ /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_hcd.h
+
+/Users/samuelparker/Code/Embedded/TEM_CAN1/inc/config.h:
 
 /Users/samuelparker/Code/Embedded/TEM_CAN1/inc/main.h:
 
@@ -154,7 +155,3 @@ src/main.o: ../src/main.c \
 /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h:
 
 /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_hcd.h:
-
-/Users/samuelparker/Code/Embedded/TEM_CAN1/inc/config.h:
-
-/Users/samuelparker/Code/Embedded/TEM_CAN1/inc/main.h:
