@@ -1,4 +1,5 @@
 src/msp_init.o: ../src/msp_init.c \
+ /Users/samuelparker/Code/Embedded/TEM_CAN1/inc/main.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/CMSIS/device/stm32f1xx.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/CMSIS/device/stm32f103xb.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/CMSIS/core/core_cm3.h \
@@ -49,6 +50,8 @@ src/msp_init.o: ../src/msp_init.c \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_ll_usb.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_pcd_ex.h \
  /Users/samuelparker/Code/Embedded/TEM_CAN1/HAL_Driver/Inc/stm32f1xx_hal_hcd.h
+
+/Users/samuelparker/Code/Embedded/TEM_CAN1/inc/main.h:
 
 /Users/samuelparker/Code/Embedded/TEM_CAN1/CMSIS/device/stm32f1xx.h:
 

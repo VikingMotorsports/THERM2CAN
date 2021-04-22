@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../src/config.c \
 ../src/main.c \
 ../src/msp_init.c \
 ../src/stm32f1xx_it.c \
@@ -11,6 +12,7 @@ C_SRCS += \
 ../src/system_stm32f1xx.c 
 
 OBJS += \
+./src/config.o \
 ./src/main.o \
 ./src/msp_init.o \
 ./src/stm32f1xx_it.o \
@@ -18,6 +20,7 @@ OBJS += \
 ./src/system_stm32f1xx.o 
 
 C_DEPS += \
+./src/config.d \
 ./src/main.d \
 ./src/msp_init.d \
 ./src/stm32f1xx_it.d \
