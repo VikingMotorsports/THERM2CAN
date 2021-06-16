@@ -29,6 +29,8 @@ int main(void)
 	ADC_init();
 	CAN_init();
 
+	blink(GPIOC, GPIO_PIN_13, 5);
+
 	uint32_t mb;
 	uint8_t data[8];
 	data[0] = 1; //TODO: update module_number for each module
