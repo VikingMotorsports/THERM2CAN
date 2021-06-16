@@ -1,6 +1,27 @@
 #include "main.h"
 
 //** MSP IMPLEMENTATION **//
+void HAL_MspInit(void)
+{
+  /* USER CODE BEGIN MspInit 0 */
+
+  /* USER CODE END MspInit 0 */
+
+  __HAL_RCC_AFIO_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
+
+//  HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_2);
+
+  /* System interrupt init*/
+
+  /** NOJTAG: JTAG-DP Disabled and SW-DP Enabled
+  */
+  __HAL_AFIO_REMAP_SWJ_NOJTAG();
+
+  /* USER CODE BEGIN MspInit 1 */
+
+  /* USER CODE END MspInit 1 */
+}
 void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
 {
 	GPIO_InitTypeDef GPIO_InitStruct = {0};
