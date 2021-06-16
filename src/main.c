@@ -10,7 +10,7 @@
 #include "main.h"
 #include "config.h"
 
-uint32_t r_0= 10000;
+uint32_t r_0= 21500;
 uint32_t adc_max= 4096;
 uint32_t b= 3380;
 uint32_t t_0= 298;
@@ -28,22 +28,36 @@ int main(void)
 	GPIO_init();
 	ADC_init();
 	CAN_init();
+
+	uint32_t mb;
 	uint8_t data[8];
 	data[0] = 0; //TODO: update module_number for each module
 	while(1)
 	{
-		uint8_t max= 0, min= 0, sum= 0;
+		uint8_t max= 0, min= 0;
+		int errors= 0;
+		int sum= 0;
 
 		for(int i= 1;i <= N_THERMISTORS; ++i)
 		{
-			select_channel(i);
+			select_channel(i); //TODO: move select bit handling out of this function
+
 			HAL_ADC_Start(&hadc);
 			HAL_ADC_PollForConversion(&hadc, 1000);
 			double volts= HAL_ADC_GetValue(&hadc);
+			if(volts > 4090)
+			{
+				++errors;
+				if(errors > 3)
+				{
+					//TODO: error message
+					data[4] = 0x80;
+				}
+			}
 			HAL_ADC_Stop(&hadc);
 			double r= (((double) adc_max * (double) r_0)/volts) - (double) r_0;
 			double t= ((double) b/(log(r/(double) r_0)+ (double) b/(double) t_0)) - 273.15;
-			//TODO: Check error conditions
+			if(volts )
 			if(i == 1)
 			{
 				max = (uint8_t) t;
@@ -52,13 +66,13 @@ int main(void)
 
 			if(t > max) max = (uint8_t) t;
 			if(t < min) min = (uint8_t) t;
-			sum += (uint8_t) t;
+			sum += t;
 		}
 
 		data[1] = min;
 		data[2] = max;
-		data[3] = sum/N_THERMISTORS;
-		data[4] = 0x24;
+		data[3] = (uint8_t) (sum/N_THERMISTORS);
+		data[4] += 0x24; //- errors); //TODO: UPDATE THESE FOR EACH BOARD
 		data[5] = 0x00;
 		data[6] = 0x23;
 		data[7]= 0x41;
@@ -66,9 +80,12 @@ int main(void)
 		{
 			data[7]+= data[i];
 		}
-		uint32_t mb;
+
 		if (HAL_CAN_AddTxMessage(&hcan, &msg, data, &mb) == HAL_OK) {
 			HAL_Delay(100);
+		}
+		else {
+			err();
 		}
 	}
 }
@@ -92,39 +109,42 @@ void select_channel(uint8_t thermistor)
 	sConfig.Rank = ADC_REGULAR_RANK_1;
 	sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
 
-//	TODO: My wiring is poorly planned so thermistors are on channel 2 and 1 of the MUXs
-	if(mod == 1)
-	{
-		if(thermistor > 4)
-		{
-			sConfig.Channel = ADC_CHANNEL_2;
-			if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-				err();
-		}
-		else if(thermistor > 2)
-		{
-			sConfig.Channel = ADC_CHANNEL_1;
-			if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-				err();
-		}
-		else
-		{
-			sConfig.Channel = ADC_CHANNEL_0;
-			if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
-				err();
-		}
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
+	if(thermistor > 30) {
+		sConfig.Channel = ADC_CHANNEL_6;
 	}
+	else if(thermistor > 24) {
+		sConfig.Channel = ADC_CHANNEL_5;
+	}
+	else if(thermistor > 18) {
+		sConfig.Channel = ADC_CHANNEL_4;
+	}
+	else if(thermistor > 12) {
+		sConfig.Channel = ADC_CHANNEL_3;
+	}
+	else if(thermistor > 6) {
+		sConfig.Channel = ADC_CHANNEL_2;
+	}
+	else if(thermistor > 0) {
+		sConfig.Channel = ADC_CHANNEL_1;
+	}
+
+	if (HAL_ADC_ConfigChannel(&hadc, &sConfig) != HAL_OK)
+		err();
+
+	if(mod & 1)
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_SET);
 	else
-	{
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8, GPIO_PIN_RESET);
-	}
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3, GPIO_PIN_RESET);
 
+	if(mod & 2)
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_4, GPIO_PIN_RESET);
 
+	if(mod & 4)
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_SET);
+	else
+		HAL_GPIO_WritePin(GPIOB, GPIO_PIN_5, GPIO_PIN_RESET);
 }
 void err()
 {
