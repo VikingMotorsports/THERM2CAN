@@ -122,7 +122,7 @@ void CAN_init()
 		err();
 
 	msg.StdId = 0x00;
-	msg.ExtId = 0x1839F383; //TODO: update this for each module
+	msg.ExtId = 0x1839F384; //TODO: update this for each module
 	msg.IDE = CAN_ID_EXT;
 	msg.RTR = CAN_RTR_DATA;
 	msg.DLC = 8;
