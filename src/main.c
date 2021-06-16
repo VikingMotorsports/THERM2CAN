@@ -31,7 +31,7 @@ int main(void)
 
 	uint32_t mb;
 	uint8_t data[8];
-	data[0] = 0; //TODO: update module_number for each module
+	data[0] = 1; //TODO: update module_number for each module
 	while(1)
 	{
 		uint8_t max= 0, min= 0;
@@ -73,9 +73,9 @@ int main(void)
 		data[2] = max;
 		data[3] = (uint8_t) (sum/N_THERMISTORS);
 		data[4] += 0x24; //- errors); //TODO: UPDATE THESE FOR EACH BOARD
-		data[5] = 0x00;
-		data[6] = 0x23;
-		data[7]= 0x41;
+		data[5] = 0x24;
+		data[6] = 0x47;
+		data[7]= 0x8A;
 		for(int i= 0; i < 7; ++i)
 		{
 			data[7]+= data[i];
