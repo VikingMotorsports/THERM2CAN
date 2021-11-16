@@ -1,16 +1,8 @@
-/**
-  ******************************************************************************
-  * @file    main.c
-  * @author  Ac6
-  * @version V1.0
-  * @date    01-December-2013
-  * @brief   Default main function.
-  ******************************************************************************
-*/
 #include "main.h"
 #include "config.h"
 
-uint32_t r_0= 21500;
+uint32_t r2= 21500;
+uint32_t r_0= 10000;
 uint32_t adc_max= 4096;
 uint32_t b= 3380;
 uint32_t t_0= 298;
@@ -31,51 +23,65 @@ int main(void)
 
 	uint32_t mb;
 	uint8_t data[8];
-	data[0] = 5; //TODO: update module_number for each module
+	data[0] = MODULE_NUMBER;
 	while(1)
 	{
-		uint8_t max= 0, min= 0;
-		int errors= 0;
-		int sum= 0;
+		uint8_t max= 0, min= 0, errors= 0;
+		uint32_t sum= 0;
 
 		for(int i= 1;i <= N_THERMISTORS; ++i)
 		{
-			select_channel(i); //TODO: move select bit handling out of this function
+			if( i == 25 || i == 26 ){
+				sum += 25;
+				continue;
+			}
+
+			select_channel(i);
 
 			HAL_ADC_Start(&hadc);
 			HAL_ADC_PollForConversion(&hadc, 1000);
-			double volts= HAL_ADC_GetValue(&hadc);
-			if(volts > 4090)
+			double adc_val= HAL_ADC_GetValue(&hadc);
+			HAL_ADC_Stop(&hadc);
+
+			if(adc_val > 4090)
 			{
 				++errors;
-				if(errors > 3)
+				data[4] = 0x80;
+			}
+			else
+			{
+
+				double volts = (adc_val/adc_max) * 3.3;
+				double r= (volts * (double) r2)/((double) 5.0 - volts);
+				double t= (503620.0 / (1690.0 + (149 * log(r/r_0)))) - 273.15;
+
+				if(t > 255) //highest temperature value possible in CAN message is 255, so set error bit if this overflows
 				{
-					//TODO: error message
 					data[4] = 0x80;
 				}
-			}
-			HAL_ADC_Stop(&hadc);
-			double r= (((double) adc_max * (double) r_0)/volts) - (double) r_0;
-			double t= ((double) b/(log(r/(double) r_0)+ (double) b/(double) t_0)) - 273.15;
-			if(volts )
-			if(i == 1)
-			{
-				max = (uint8_t) t;
-				min = (uint8_t) t;
-			}
 
-			if(t > max) max = (uint8_t) t;
-			if(t < min) min = (uint8_t) t;
-			sum += t;
+				if(i == 1)
+				{
+					max = (uint8_t) t;
+					min = (uint8_t) t;
+				}
+				else if(t > max)
+				{
+					max = (uint8_t) t;
+				}
+				else if(t < min) min = (uint8_t) t;
+
+				sum += t;
+			}
 		}
 
 		data[1] = min;
 		data[2] = max;
 		data[3] = (uint8_t) (sum/N_THERMISTORS);
-		data[4] += 0x24; //- errors); //TODO: UPDATE THESE FOR EACH BOARD
-		data[5] = 0xB4;
-		data[6] = 0xD7;
-		data[7]= 0x46;
+		data[4] += (0x24 - errors);
+		data[5] = 0x0;
+		data[6] = 0x23;
+		data[7]= 0x41;
 		for(int i= 0; i < 7; ++i)
 		{
 			data[7]+= data[i];
@@ -87,6 +93,7 @@ int main(void)
 		else {
 			err();
 		}
+		data[4] = 0;
 	}
 }
 

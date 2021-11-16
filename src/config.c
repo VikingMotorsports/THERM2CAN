@@ -121,25 +121,28 @@ void CAN_init()
 	if (HAL_CAN_Start(&hcan) != HAL_OK)
 		err();
 
+	uint32_t CAN_ID = 0x1839F380 + MODULE_NUMBER;
+
 	msg.StdId = 0x00;
-	msg.ExtId = 0x1839F385; //TODO: update this for each module
+	msg.ExtId = CAN_ID;
 	msg.IDE = CAN_ID_EXT;
 	msg.RTR = CAN_RTR_DATA;
 	msg.DLC = 8;
 	msg.TransmitGlobalTime = DISABLE;
 
-	err_msg.StdId = 0x00;
-	err_msg.ExtId = 0x0; //TODO: update this for each module (this is the module number)
-	err_msg.IDE = CAN_ID_EXT;
-	err_msg.RTR = CAN_RTR_DATA;
-	err_msg.DLC = 1;
-	err_msg.TransmitGlobalTime = DISABLE;
+	//*** for debugging
+//	err_msg.StdId = 0x00;
+//	err_msg.ExtId = 0x0;
+//	err_msg.IDE = CAN_ID_EXT;
+//	err_msg.RTR = CAN_RTR_DATA;
+//	err_msg.DLC = 1;
+//	err_msg.TransmitGlobalTime = DISABLE;
 
-	err_msg.StdId = 0x00;
-	debug_msg.ExtId = 0x7;
-	debug_msg.IDE = CAN_ID_EXT;
-	debug_msg.RTR = CAN_RTR_DATA;
-	debug_msg.DLC = 1;
-	debug_msg.TransmitGlobalTime = DISABLE;
+//	debug_msg.StdId = 0x00;
+//	debug_msg.ExtId = 0x7;
+//	debug_msg.IDE = CAN_ID_EXT;
+//	debug_msg.RTR = CAN_RTR_DATA;
+//	debug_msg.DLC = 1;
+//	debug_msg.TransmitGlobalTime = DISABLE;
 
 }

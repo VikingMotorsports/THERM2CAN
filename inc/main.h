@@ -5,6 +5,7 @@
 #define N_THERMISTORS 36
 #define N_MUXS 6
 #define THERM_PER_MUX 6
+#define MODULE_NUMBER 0
 
 //** GLOBALS **//
 CAN_HandleTypeDef hcan;
@@ -15,4 +16,3 @@ CAN_TxHeaderTypeDef debug_msg;
 
 //** PROTOTYPES **//
 void blink(GPIO_TypeDef* port, uint16_t pin, uint8_t n);
-//void err();
