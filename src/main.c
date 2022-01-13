@@ -50,7 +50,7 @@ int main(void)
 			}
 			else
 			{
-
+				//TODO: the excessive casting here is expensive
 				double volts = (adc_val/adc_max) * 3.3;
 				double r= (volts * (double) r2)/((double) 5.0 - volts);
 				double t= (503620.0 / (1690.0 + (149 * log(r/r_0)))) - 273.15;
@@ -79,6 +79,7 @@ int main(void)
 		data[2] = max;
 		data[3] = (uint8_t) (sum/N_THERMISTORS);
 		data[4] += (0x24 - errors);
+		//TODO: These vallues could be more dynamic using more #defines like in main.h
 		data[5] = 0x0;
 		data[6] = 0x23;
 		data[7]= 0x41;
