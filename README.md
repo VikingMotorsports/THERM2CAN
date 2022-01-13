@@ -6,7 +6,7 @@ A technical description of the development process is available [here](https://p
 # Author(s)
 - Samuel Parker ([Email](samuel.j.parker@outlook.com))
 
-# This project falls under the [GNU Public License 3.0](./LICENSE.txt)
+# This project falls under the [GNU Public License 3.0](./LICENSE)
 
 # Components
 - Board: STM32 Blue Pill
