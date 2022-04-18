@@ -46,4 +46,5 @@ The data is then organized in a CAN message per the Orion BMS 2's [CAN message s
 
 # Notes: 
 - Blue Pills are not an authentic ST item, so if you have issues flashing the boards from System Workbench, it may be an issue with the board itself
+- To configure the characteristics of each module (# of thermistors, module number, thermistors per mux, number of muxs) change the `#defines` in [./inc/main.h](./inc/main.h)
 
