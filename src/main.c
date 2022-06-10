@@ -23,6 +23,8 @@ int main(void)
 
 	uint32_t mb;
 	uint8_t data[8];
+	uint8_t err_data[8];
+	err_data[0] = MODULE_NUMBER;
 	data[0] = MODULE_NUMBER;
 	while(1)
 	{
@@ -46,7 +48,9 @@ int main(void)
 			if(adc_val > 4090)
 			{
 				++errors;
-				data[4] = 0x80;
+					err_data[1] = i;
+					HAL_CAN_AddTxMessage(&hcan, &err_msg, err_data, &mb);
+					data[4] = 0x80;
 			}
 			else
 			{
@@ -80,9 +84,9 @@ int main(void)
 		data[3] = (uint8_t) (sum/N_THERMISTORS);
 		data[4] += (0x24 - errors);
 		//TODO: These vallues could be more dynamic using more #defines like in main.h
-		data[5] = 0x0;
-		data[6] = 0x23;
-		data[7]= 0x41;
+		data[5] = LOW_ID;
+		data[6] = HIGH_ID;
+		data[7]= CHECK_SUM;
 		for(int i= 0; i < 7; ++i)
 		{
 			data[7]+= data[i];

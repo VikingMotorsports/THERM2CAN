@@ -131,12 +131,12 @@ void CAN_init()
 	msg.TransmitGlobalTime = DISABLE;
 
 	//*** for debugging
-//	err_msg.StdId = 0x00;
-//	err_msg.ExtId = 0x0;
-//	err_msg.IDE = CAN_ID_EXT;
-//	err_msg.RTR = CAN_RTR_DATA;
-//	err_msg.DLC = 1;
-//	err_msg.TransmitGlobalTime = DISABLE;
+	err_msg.StdId = 0x0;
+	err_msg.ExtId = 0x1;
+	err_msg.IDE = CAN_ID_EXT;
+	err_msg.RTR = CAN_RTR_DATA;
+	err_msg.DLC = 8;
+	err_msg.TransmitGlobalTime = DISABLE;
 
 //	debug_msg.StdId = 0x00;
 //	debug_msg.ExtId = 0x7;
